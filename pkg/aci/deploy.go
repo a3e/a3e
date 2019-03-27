@@ -18,8 +18,10 @@ func deployURL(subID, rg, containerGroup string) string {
 // Deploy deploys a container group to the specified subscription (subID) and
 // resource group (subID & rg) with the given name containerGroup.
 func (c *Client) Deploy(subID, rg, containerGroup string) error {
+	armTpl := newARMTpl("TODOName", nil) // TODO: containers!
 	cl := gorequest.New().
-		Put(deployURL(subID, rg, containerGroup))
+		Put(deployURL(subID, rg, containerGroup)).
+		SendStruct(armTpl)
 	cl = auth(cl, c.token)
 	_, _, errs := cl.End()
 	if errs != nil {

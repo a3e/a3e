@@ -1,7 +1,7 @@
 package aci
 
 import (
-	"fmt"
+	"strconv"
 )
 
 type container struct {
@@ -10,7 +10,7 @@ type container struct {
 	ports []int
 }
 
-func newArmTpl(name string, containers []container) *aciARMTpl {
+func newARMTpl(name string, containers []container) *aciARMTpl {
 	ret := &aciARMTpl{
 		APIVersion: apiVersion,
 		Type:       typeVal,
@@ -22,12 +22,11 @@ func newArmTpl(name string, containers []container) *aciARMTpl {
 	for _, container := range containers {
 		ports := []aciARMTpl_sub7{}
 		for _, port := range container.ports {
-			ports = append(ports, aciARMTpl{
-				Port: port,
-				Name: fmt.Sprintf("port_%d", port),
+			ports = append(ports, aciARMTpl_sub7{
+				Port: strconv.Itoa(port),
 			})
 		}
-		ret.Properties.Contaienrs = append(
+		ret.Properties.Containers = append(
 			ret.Properties.Containers,
 			aciARMTpl_sub13{
 				Name: container.name,
@@ -38,4 +37,5 @@ func newArmTpl(name string, containers []container) *aciARMTpl {
 			},
 		)
 	}
+	return ret
 }

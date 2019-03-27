@@ -11,7 +11,7 @@ set -eou pipefail
 # for more information
 
 ARM_INPUT_FILE=${PWD}/arm/aci_template.json
-ARM_OUTPUT_FILE=${PWD}/aci/aci_arm.go
+ARM_OUTPUT_FILE=${PWD}/pkg/aci/aci_arm_tpl.go
 ARM_FILE=$(cat ${ARM_INPUT_FILE})
 
 echo "Generating struct ${ARM_OUTPUT_FILE} from JSON ${ARM_INPUT_FILE}"
