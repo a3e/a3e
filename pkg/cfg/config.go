@@ -1,4 +1,4 @@
-package config
+package cfg
 
 import (
 	"io/ioutil"
@@ -8,6 +8,7 @@ import (
 
 // Root is the root of a config file
 type Root struct {
+	ID         ID          `json:"id"`
 	Name       string      `json:"name"`
 	Locations  []string    `json:"locations"`
 	Containers []Container `json:"containers"`
@@ -49,6 +50,11 @@ func (e EnvVal) Value(envReader func(string) string) string {
 		return envReader(*e.FromEnv)
 	}
 	return ""
+}
+
+type ID struct {
+	SubscriptionID string `json:"subscription-id"`
+	ResourceGroup  string `json:"resource-group"`
 }
 
 // Decode decodes the config file at filename into a root config struct.
