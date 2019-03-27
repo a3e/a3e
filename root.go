@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/a3e/a3e/cmd"
 	"github.com/a3e/a3e/cmd/deploy"
+	"github.com/a3e/a3e/pkg/log/human"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,44 +14,36 @@ import (
 
 var cfgFile string
 
-// RootCmd represents the base command when called without any subcommands
-var RootCmd = &cobra.Command{
-	Use:   "a3e",
-	Short: "Simple container deployment",
-	// 	Long: `A longer description that spans multiple lines and likely contains
-	// examples and usage of using your application. For example:
-
-	// Cobra is a CLI library for Go that empowers applications.
-	// This application is a tool to generate the needed files
-	// to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
-	SilenceUsage: true,
-}
-
-// Execute adds all child commands to the root command sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() {
-	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
-
-func init() {
+// Root sets up the command for the top level a3e probram,
+// adds all child commands, and does additional configuration.
+// It only needs to be called once and then run by the main function
+func Root() *cobra.Command {
+	root := cmd.Skeleton("a3e", "Simple container deployment")
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cmd.yaml)")
+	root.PersistentFlags().StringVar(
+		&cfgFile,
+		"config",
+		"",
+		"config file (default is $HOME/.cmd.yaml)",
+	)
+
+	root.PersistentFlags().BoolVar(
+		&human.IsDebugging,
+		"debug",
+		false,
+		"Turn on debug logging",
+	)
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	RootCmd.AddCommand(deploy.Root())
+	root.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	root.AddCommand(deploy.Root())
 	// RootCmd.AddCommand(build.Command())
+	return root
 }
 
 // initConfig reads in config file and ENV variables if set.

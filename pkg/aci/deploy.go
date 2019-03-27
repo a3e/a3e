@@ -2,7 +2,9 @@ package aci
 
 import (
 	"fmt"
+	"net/http"
 
+	"github.com/a3e/a3e/pkg/log/human"
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -23,9 +25,16 @@ func (c *Client) Deploy(subID, rg, containerGroup string) error {
 		Put(deployURL(subID, rg, containerGroup)).
 		SendStruct(armTpl)
 	cl = auth(cl, c.token)
-	_, _, errs := cl.End()
+	human.Debug("sending the request")
+	resp, _, errs := cl.End()
 	if errs != nil {
 		return aggregateErrs(errs)
+	}
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+		return fmt.Errorf(
+			"The request to deploy to Azure failed (got response code %d)",
+			resp.StatusCode,
+		)
 	}
 	return nil
 }
