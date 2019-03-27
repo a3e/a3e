@@ -15,4 +15,9 @@ ARM_OUTPUT_FILE=${PWD}/aci/aci_arm.go
 ARM_FILE=$(cat ${ARM_INPUT_FILE})
 
 echo "Generating struct ${ARM_OUTPUT_FILE} from JSON ${ARM_INPUT_FILE}"
-gojson -name=ACI -input ${ARM_INPUT_FILE} > ${ARM_OUTPUT_FILE}
+gojson \
+-name=aciARMTpl \
+-input ${ARM_INPUT_FILE} \
+-pkg aci \
+-subStruct=true \
+> ${ARM_OUTPUT_FILE}
