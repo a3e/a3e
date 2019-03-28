@@ -1,4 +1,4 @@
-package cfg
+package config
 
 import (
 	"io/ioutil"
@@ -23,9 +23,8 @@ type Container struct {
 
 // EnvVal is a single environment variable in a config file
 type EnvVal struct {
-	Name    string  `json:"name"`
-	FromEnv *string `json:"from-env,omitempty"`
-	Val     *string `json:"val,omitempty"`
+	Name    string `json:"name"`
+	Default string `json:"defaultval,omitempty"`
 }
 
 // Value gets the value of the environment variable. It first checks
@@ -43,6 +42,10 @@ type EnvVal struct {
 //
 // If neither FromEnv nor Val is set, this returns the empty string
 func (e EnvVal) Value(envReader func(string) string) string {
+	fromEnv := envReader(e.Name)
+	if fromEnv == "" {
+		return e.Default
+	}
 	if e.Val != nil {
 		return *e.Val
 	}

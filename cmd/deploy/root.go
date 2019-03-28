@@ -3,8 +3,8 @@ package deploy
 import (
 	"github.com/a3e/a3e/cmd"
 	"github.com/a3e/a3e/pkg/aci"
+	"github.com/a3e/a3e/pkg/config"
 	"github.com/a3e/a3e/pkg/log/human"
-	"github.com/a3e/ae3/pkg/cfg"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +15,9 @@ func Root() *cobra.Command {
 		cl := aci.NewClient("TODO")
 		return human.Check(
 			cl.Deploy(
-				cfg.Cfg.ID.SubscriptionID,
-				cfg.Cfg.ID.ResourceGroup,
-				cfg.Cfg.Name,
+				config.Cfg.ID.SubscriptionID,
+				config.Cfg.ID.ResourceGroup,
+				config.Cfg.Name,
 			),
 			"Deployment Complete!",
 		)

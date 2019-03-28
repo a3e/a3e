@@ -1,4 +1,4 @@
-package cfg
+package config
 
 // Cfg is the root configuration file.
 // This global variable is not concurrency safe

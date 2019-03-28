@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/a3e/a3e/pkg/cfg"
+	"github.com/a3e/a3e/pkg/config"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ func Skeleton(use, short string) *cobra.Command {
 		"The name of the config file",
 	)
 	ret.PreRunE = func(cmd *cobra.Command, args []string) error {
-		return cfg.Parse(configFileName)
+		return config.Parse(configFileName)
 	}
 	return ret
 }
