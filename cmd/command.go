@@ -8,20 +8,15 @@ import (
 // Skeleton returns a basic cobra.Command for use all throughout the codebase
 func Skeleton(use, short string) *cobra.Command {
 	ret := &cobra.Command{
-		Use:           use,
-		Short:         short,
-		SilenceUsage:  true,
-		SilenceErrors: true,
+		Use:   use,
+		Short: short,
+		//SilenceUsage:  true,
+		//SilenceErrors: true,
 	}
-	configFileName := "a3e.hcl"
-	ret.PersistentFlags().StringVar(
-		&configFileName,
-		"config",
-		configFileName,
-		"The name of the config file",
-	)
+
+	configFileName := ret.Flags().StringP("filename", "f", "a3e.hcl", "The name of the config file.")
 	ret.PreRunE = func(cmd *cobra.Command, args []string) error {
-		return config.Parse(configFileName)
+		return config.Parse(*configFileName)
 	}
 	return ret
 }
