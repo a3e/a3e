@@ -43,15 +43,19 @@ type EnvVal struct {
 // If neither FromEnv nor Val is set, this returns the empty string
 func (e EnvVal) Value(envReader func(string) string) string {
 	fromEnv := envReader(e.Name)
+
 	if fromEnv == "" {
 		return e.Default
 	}
-	if e.Val != nil {
-		return *e.Val
-	}
-	if e.FromEnv != nil {
-		return envReader(*e.FromEnv)
-	}
+
+	// TODO: restore unused values
+	// if e.Val != nil {
+	// 	return *e.Val
+	// }
+	// if e.FromEnv != nil {
+	// 	return envReader(*e.FromEnv)
+	// }
+
 	return ""
 }
 
