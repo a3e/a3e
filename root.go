@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/a3e/a3e/cmd"
+	"github.com/a3e/a3e/cmd/alpha"
 	"github.com/a3e/a3e/cmd/deploy"
 	"github.com/a3e/a3e/pkg/log/human"
 	homedir "github.com/mitchellh/go-homedir"
@@ -42,6 +43,7 @@ func Root() *cobra.Command {
 	// when this action is called directly.
 	root.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	root.AddCommand(deploy.Root())
+	root.AddCommand(alpha.Root())
 	// RootCmd.AddCommand(build.Command())
 	return root
 }
