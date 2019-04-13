@@ -1,5 +1,7 @@
 package config
 
+import "fmt"
+
 type envVal struct {
 	name   string
 	def    string
@@ -20,16 +22,15 @@ type envVal struct {
 // doesn't exist (including the empty string), this returns the empty string
 //
 // If neither FromEnv nor Val is set, this returns the empty string
-func (e envVal) value(envReader func(string) string) string {
-	fromEnv := envReader(e.Name)
-	if fromEnv == "" {
-		return e.Default
+func (e envVal) value(envReader func(string) string) (string, error) {
+	if e.secret {
+		return "", fmt.Errorf("secret envs no supported yet :(")
 	}
-	if e.Val != nil {
-		return *e.Val
+	fromEnv := envReader(e.name)
+	hasDef := e.def != ""
+	if fromEnv == "" && !hasDef {
+		err := fmt.Errorf("environment variable %s missing, and no default set", e.name)
+		return "", err
 	}
-	if e.FromEnv != nil {
-		return envReader(*e.FromEnv)
-	}
-	return ""
+	return fromEnv, nil
 }
