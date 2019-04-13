@@ -43,7 +43,7 @@ func Root() *cobra.Command {
 	root.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	root.AddCommand(deploy.Root())
 	// RootCmd.AddCommand(build.Command())
-	return root
+	return root.Command
 }
 
 // initConfig reads in config file and ENV variables if set.
