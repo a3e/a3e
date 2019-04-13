@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/a3e/a3e/cmd"
+	"github.com/a3e/a3e/cmd/alpha"
+	"github.com/a3e/a3e/cmd/beta"
 	"github.com/a3e/a3e/cmd/deploy"
 	"github.com/a3e/a3e/pkg/log/human"
 	homedir "github.com/mitchellh/go-homedir"
@@ -41,6 +43,8 @@ func Root() *cobra.Command {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	root.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	root.AddCommand(alpha.Root())
+	root.AddCommand(beta.Root())
 	root.AddCommand(deploy.Root())
 	// RootCmd.AddCommand(build.Command())
 	return root
