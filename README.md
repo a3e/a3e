@@ -19,7 +19,8 @@ app.cloud_info([
     }
 ])
 
-athens = app.container(image="gomods/athens:v0.3.1", ports=[3000])
-athens.env("IN_THE_CLEAR", default="SOMETHING")
-athens.env("SECRET_VAR", secret=true)
+athens = app.container("gomods/athens:v0.3.1")
+athens.ports([3000])
+athens.env("IN_THE_CLEAR", "SOMETHING")
+athens.secretenv("SECRET_VAR")
 ```
