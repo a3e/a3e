@@ -47,7 +47,7 @@ func Root() *cobra.Command {
 	root.AddCommand(beta.Root())
 	root.AddCommand(deploy.Root())
 	// RootCmd.AddCommand(build.Command())
-	return root
+	return root.Command
 }
 
 // initConfig reads in config file and ENV variables if set.
