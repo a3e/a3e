@@ -15,6 +15,7 @@ type Params struct {
 	ClientID string `json:"CLIENT_ID" envconfig:"CLIENT_ID" required:"true" default:"04b07795-8ddb-461a-bbee-02f9e1bf7b46"`
 	TenantID string `json:"TENANT_ID" envconfig:"TENANT_ID" required:"true"`
 	SubID    string `json:"SUBSCRIPTION_ID" envconfig:"SUBSCRIPTION_ID" required:"true"`
+	ResGroup string `json:"RESOURCE_GROUP" envconfig:"RESOURCE_GROUP" required:"true:"`
 }
 
 // FetchFromFile fetches parameters from the given private params file. Returns
