@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/a3e/a3e/pkg/arm"
+	"github.com/a3e/a3e/pkg/privcfg"
 	"github.com/spf13/cobra"
 )
 
@@ -292,34 +292,26 @@ func listResources() {
 }
 
 func login() {
-
 	config := NewConfig()
 	client := resources.NewClient(config.SubscriptionID)
 	client.Authorizer = config.Authorizer
-
 }
 
 type Config struct {
-	ClientID       string
-	TenantID       string
-	SubscriptionID string
-	Authorizer     autorest.Authorizer
+	*privcfg.Params
+	Authorizer autorest.Authorizer
 }
 
 func NewConfig() *Config {
-	config := &Config{}
-	// set environment variables
-	config.ClientID = os.Getenv("AZURE_CLIENT_ID")
-	if config.ClientID == "" {
-		// use the azure cli application if if we don't have one already
-		config.ClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
-		os.Setenv("AZURE_CLIENT_ID", config.ClientID)
-	}
-	config.TenantID = os.Getenv("AZURE_TENANT_ID")
-	config.SubscriptionID = os.Getenv("AZURE_SUBSCRIPTION_ID")
-
-	if config.ClientID == "" || config.TenantID == "" || config.SubscriptionID == "" {
+	config := new(Config)
+	paramsFromFile, fileErr := privcfg.FetchFromFile("")
+	paramsFromEnv, envErr := privcfg.FetchFromEnv()
+	if fileErr != nil && envErr != nil {
 		log.Fatal("AZURE_APPLICATION_ID, AZURE_TENANT_ID and AZURE_SUBSCRIPTION_ID are required.")
+	} else if envErr == nil { // env comes first
+		config.Params = paramsFromEnv
+	} else if fileErr == nil {
+		config.Params = paramsFromFile
 	}
 
 	tmp, err := arm.NewDeviceCodeAuthorizerWithCache()
